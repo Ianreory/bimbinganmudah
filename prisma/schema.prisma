@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" 
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  nama       String   @map("nama")
+  email      String   @unique
+  password   String
+  role       Role
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  // Relasi ke Bimbingan
+    mahasiswaBimbingan Bimbingan[] @relation("BimbinganMahasiswa")
+    dosenBimbingan     Bimbingan[] @relation("BimbinganDosen")
+
+    // Relasi ke Chat (Tambahkan ini)
+  pesanDikirim Chat[] @relation("UserChat")
+
+  @@map("users")
+}
+
+enum Role {
+  mahasiswa
+  dosen
+  admin
+}
+
+model Bimbingan {
+  id               Int               @id @default(autoincrement())
+  mahasiswa_id     Int
+  dosen_id         Int
+  status           Status            @default(pending) // Tambahkan status bimbingan
+  jadwalBimbingan  JadwalBimbingan[] 
+  progres          Progres[] 
+  dokumen         Dokumen[]
+  chat            Chat[]
+  penilaian       Penilaian[]
+
+  // Relasi ke User
+  mahasiswa    User    @relation("BimbinganMahasiswa", fields: [mahasiswa_id], references: [id])
+  dosen        User    @relation("BimbinganDosen", fields: [dosen_id], references: [id])
+
+
+  @@map("bimbingan")
+}
+
+enum Status {
+  pending
+  disetujui
+  selesai
+}
+
+model JadwalBimbingan {
+  id            Int        @id @default(autoincrement())
+  tanggal       DateTime
+  link          String?
+  bimbingan_id  Int
+  bimbingan     Bimbingan  @relation(fields: [bimbingan_id], references: [id])
+
+  @@map("jadwal_bimbingan")
+}
+
+model Progres {
+  id            Int        @id @default(autoincrement())
+  deskripsi     String
+  target_selesai DateTime  @db.Date
+  bimbingan_id  Int
+  bimbingan     Bimbingan  @relation(fields: [bimbingan_id], references: [id])
+
+  @@map("progres")
+}
+
+model Dokumen {
+  id            Int        @id @default(autoincrement())
+  nama          String
+  createdAt     DateTime   @default(now()) @map("created_at")
+  bimbingan_id  Int
+  bimbingan     Bimbingan  @relation(fields: [bimbingan_id], references: [id])
+
+  @@map("dokumen")
+}
+
+model Chat {
+  id            Int        @id @default(autoincrement())
+  isi_pesan     String
+  createdAt     DateTime   @default(now()) @map("created_at")
+  bimbingan_id  Int
+  bimbingan     Bimbingan  @relation(fields: [bimbingan_id], references: [id])
+  pengirim_id   Int
+  pengirim      User       @relation("UserChat", fields: [pengirim_id], references: [id])
+
+  @@map("chat")
+}
+
+model Penilaian {
+  id            Int        @id @default(autoincrement())
+  nilai         Int
+  createdAt     DateTime   @default(now()) @map("created_at")
+  bimbingan_id  Int
+  bimbingan     Bimbingan  @relation(fields: [bimbingan_id], references: [id])
+
+  @@map("penilaian")
+}
