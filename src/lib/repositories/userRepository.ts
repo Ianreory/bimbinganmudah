@@ -14,4 +14,8 @@ export const UserRepository = {
   async createUser(data: { email: string; nama: string; password: string; role: Role }) {
     return prisma.user.create({ data });
   },
+
+  async getUserByEmail(email: string) {
+    return prisma.user.findUnique({ where: { email } });
+  }
 };

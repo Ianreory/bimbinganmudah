@@ -10,12 +10,20 @@ export const UserService = {
     return user;
   },
 
-  async registerUser(email: string, nama: string, password: string) {
-    return UserRepository.createUser({ 
-      email, 
-      nama, 
-      password, 
-      role: Role.admin
+  async login(email: string, password: string) {
+    let user = await UserRepository.getUserByEmail(email);
+    if (user) {
+      return true;
+    }
+    return false;
+  },
+
+  async registerUser(email: string, nama: string, hashedPassword: string) {
+    return UserRepository.createUser({
+      email,
+      nama,
+      password: hashedPassword,
+      role: Role.mahasiswa,
     });
   },
 
