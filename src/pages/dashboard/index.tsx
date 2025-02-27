@@ -1,10 +1,15 @@
+import { ReactNode } from "react";
 import { AppSidebar } from "@/components/pages/app-sidebar";
 import { ModeToggle } from "@/components/pages/mode-togel";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
-export default function Page() {
+interface MainLayoutProps {
+  children: ReactNode;
+}
+
+export default function MainLayout({ children }: MainLayoutProps) {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -25,16 +30,9 @@ export default function Page() {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
-          <ModeToggle/>
+          <ModeToggle />
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-          </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-        </div>
+        <div className="p-4 pt-0">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

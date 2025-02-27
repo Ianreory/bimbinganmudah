@@ -35,14 +35,13 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Information",
       url: "#",
       icon: SquareTerminal,
-      isActive: true,
       items: [
         {
           title: "History",
-          url: "#",
+          url: "/dashboard/history",
         },
         {
           title: "Starred",
@@ -61,7 +60,7 @@ const data = {
       items: [
         {
           title: "Genesis",
-          url: "#",
+          url: "/dashboard/genesis",
         },
         {
           title: "Explorer",
@@ -120,21 +119,18 @@ const data = {
       ],
     },
   ],
-  projects: [
+  projects: [],
+  navHome: [
     {
-      name: "Design Engineering",
-      url: "#",
+      title: "Dashboard",
+      url: "/dashboard",
       icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
+      items: [
+        {
+          title: "Dashboard",
+          url: "/dashboard/dashboard",
+        },
+      ],
     },
   ],
 };
