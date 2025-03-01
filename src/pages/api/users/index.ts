@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { UserService } from "@/services/user/userService";
-import apiLogger from "../middleware";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {

@@ -1,7 +1,11 @@
 // (Business logic)
 
 import { UserRepository } from "@/lib/repositories/userRepository";
-import { Role } from "@prisma/client";
+enum Role {
+  mahasiswa = "mahasiswa",
+  dosen = "dosen",
+  admin = "admin"
+}
 
 export const UserService = {
   async getUserProfile(id: number) {

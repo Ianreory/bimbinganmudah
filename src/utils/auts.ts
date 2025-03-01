@@ -5,6 +5,7 @@ export const login = async (email: string, password: string) => {
     body: JSON.stringify({ email, password }),
   });
 
+
   const data = await response.json();
 
   if (response.ok) {

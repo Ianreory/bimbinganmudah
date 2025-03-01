@@ -47,18 +47,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Buat access token (berlaku 15 menit)
-    const accessToken = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET as string, { expiresIn: "15m" });
+    const accessToken = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET as string, { expiresIn: "1m" });
 
     // Buat refresh token (berlaku 7 hari)
     const refreshToken = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: "7d" });
 
-    // Simpan refresh token di cookie (httpOnly)
     res.setHeader(
       "Set-Cookie",
-      serialize("refreshToken", refreshToken, {
+      cookie.serialize("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV !== "development",
         sameSite: "strict",
+        maxAge: 60 * 60 * 24 * 7, // 7 hari
         path: "/",
       })
     );

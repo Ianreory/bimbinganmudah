@@ -17,9 +17,9 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    console.log({ email, password });
     const result = await handleLogin(email, password);
 
+    console.log(result);
     if (result.status !== 200) {
       setError(result.message); // Pastikan ini benar 'message', bukan 'message'
 
